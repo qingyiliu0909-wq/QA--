@@ -1,0 +1,176 @@
+{
+  "_comment": "══════════════════════════════════════════════════════════════",
+  "_comment1": "  EM 资产命名规则配置文件",
+  "_comment2": "  引擎侧读取此文件进行自动纠正和合规检测",
+  "_comment3": "  CI / SVN 侧可直接复用此文件做提交前检查",
+  "_comment4": "══════════════════════════════════════════════════════════════",
+  "_comment5": "",
+  "_comment6": "【enabled】全局开关 — false 时整个命名系统不会做任何处理",
+  "_comment7": "",
+  "_comment8": "【ignorePaths】屏蔽路径列表 — 命中任一前缀的资产完全不处理",
+  "_comment9": "  - 初期建议将大部分路径加入，逐步放开",
+  "_comment10": "  - 匹配方式：资产完整路径以此字符串开头即为命中",
+  "_comment11": "",
+  "_comment12": "【ignoreClasses】忽略的资产类型列表 — 命中任一 class 的资产完全不处理",
+  "_comment13": "  - 例如 ObjectRedirector（重定向器，开发期残留，Fix Up 后自动消除）",
+  "_comment14": "",
+  "_comment15": "【assetTypes】全局资产类型定义（分类规则）",
+  "_comment16": "  - prefix：类型前缀，必须全局唯一",
+  "_comment17": "  - suffix：类型后缀（可选），如 SkeletalMesh 的 _SM",
+  "_comment18": "  - suffixPlaceholder：后缀多选无法自动确定时，引擎填充的占位符",
+  "_comment19": "    占位符在引擎侧视为合规，CI 侧视为不合规",
+  "_comment20": "    注意：Import 时 class 取到基类（如 Texture），Create/Duplicate 取到具体",
+  "_comment21": "    子类（如 Texture2D）。如果某类型在 Import 和 Create 场景下类名不同，",
+  "_comment22": "    需要在 assetTypes 和 validation 中各添加一条，例如 Texture2D 和 Texture",
+  "_comment23": "    都需列出。",
+  "_comment24": "",
+  "_comment25": "【defaultValidation】默认校验规则 — 未命中 pathRules 时使用",
+  "_comment26": "  - enabled：是否启用此项校验",
+  "_comment27": "  - constraints：每条约束包含 type(Prefix|Suffix)、value、scope、enabled",
+  "_comment28": "  - scope 取值：Both（双方生效）、Editor（仅引擎）、CI（仅SVN检查）",
+  "_comment29": "",
+  "_comment30": "【pathRules】路径专属规则 — 最长前缀匹配",
+  "_comment31": "  - enabled：是否启用此路径规则",
+  "_comment32": "  - path：规则生效路径，子目录自动继承",
+  "_comment33": "  - assetTypes：可选，覆盖全局 assetTypes（为空则继承全局）",
+  "_comment34": "  - validation：可选，覆盖 defaultValidation（为空则继承全局）",
+  "_comment35": "",
+  "_comment36": "【正确命名格式】{prefix}{BaseName}{suffix}",
+  "_comment37": "  例：T_Rock_D  → prefix=T_, BaseName=Rock, suffix=_D",
+  "_comment38": "  例：SK_Hero_SM → prefix=SK_, BaseName=Hero, suffix=_SM",
+  "_comment39": "══════════════════════════════════════════════════════════════",
+
+  "enabled": true,
+
+  "ignorePaths": [
+    "/Game/AssetDesign/",
+    "/Game/BluePrints/",
+    "/Game/Dialogue/",
+    "/Game/FluidFlux/",
+    "/Game/HoudiniEngine/",
+    "/Game/KawaiiPhysicsSample/",
+    "/Game/LookDev/",
+    "/Game/Maps/",
+    "/Game/Maps_Edit/",
+    "/Game/Maps_Phone/",
+    "/Game/Megascans/",
+    "/Game/Movies/",
+    "/Game/MSPresets/",
+    "/Game/OfflineAssets/",
+    "/Game/Oodle/",
+    "/Game/PipelineCaches/",
+    "/Game/Script/",
+    "/Game/Splash/",
+    "/Game/TestScript/",
+    "/Game/Tools/",
+    "/Game/UI/"
+  ],
+
+  "ignoreClasses": [
+    "ObjectRedirector"
+  ],
+
+  "assetTypes": [
+    { "class": "StaticMesh",       "prefix": "SM_", "suffix": "",    "suffixPlaceholder": "" },
+    { "class": "SkeletalMesh",       "prefix": "", "suffix": "_SM",    "suffixPlaceholder": "" },
+    { "class": ["Texture2D", "Texture","Texture2DArray","TextureCube","TextureRenderTarget2D","TextureRenderTargetCube","VolumeTexture"], "prefix": "T_", "suffix": "", "suffixPlaceholder": "_Auto" },
+    { "class": "LevelSequence",    "prefix": "SQ_", "suffix": "",    "suffixPlaceholder": "" },
+    { "class": "Material",         "prefix": "M_",  "suffix": "",    "suffixPlaceholder": "" },
+    { "class": ["MaterialInstanceConstant","MaterialInstance"], "prefix": "MI_", "suffix": "",    "suffixPlaceholder": "" }
+  ],
+
+  "defaultValidation": [
+    {
+      "class": "StaticMesh",
+      "enabled": true,
+      "constraints": [
+        { "type": "Prefix", "value": "SM_", "scope": "Both", "enabled": true }
+      ]
+    },
+    {
+      "class": "SkeletalMesh",
+      "enabled": true,
+      "constraints": [
+        { "type": "Suffix", "value": "_SM", "scope": "Both", "enabled": true }
+      ]
+    },
+    {
+      "class": ["Texture2D", "Texture", "Texture2DArray", "TextureCube", "TextureRenderTarget2D", "TextureRenderTargetCube", "VolumeTexture"],
+      "enabled": true,
+      "constraints": [
+        { "type": "Prefix", "value": "T_",  "scope": "Both", "enabled": true },
+        { "type": "AllowSuffix", "value": "_D",  "scope": "Both", "enabled": true },
+        { "type": "AllowSuffix", "value": "_E",  "scope": "Both", "enabled": true },
+        { "type": "AllowSuffix", "value": "_M",  "scope": "Both", "enabled": true },
+        { "type": "AllowSuffix", "value": "_N",  "scope": "Both", "enabled": true },
+        { "type": "AllowSuffix", "value": "_Mask",  "scope": "Both", "enabled": true },
+        { "type": "AllowSuffix", "value": "_HDR",  "scope": "Both", "enabled": true },
+        { "type": "AllowSuffix", "value": "_pos",  "scope": "Both", "enabled": true },
+        { "type": "AllowSuffix", "value": "_rot",  "scope": "Both", "enabled": true },
+        { "type": "AllowSuffix", "value": "_XVector",  "scope": "Both", "enabled": true },
+        { "type": "AllowSuffix", "value": "_PivotPos",  "scope": "Both", "enabled": true },
+        { "type": "AllowSuffix", "value": "_Auto",  "scope": "Editor", "enabled": true }
+      ]
+    },
+    {
+      "class": "LevelSequence",
+      "enabled": true,
+      "constraints": [
+        { "type": "Prefix", "value": "SQ_", "scope": "Both", "enabled": true }
+      ]
+    },
+    {
+      "class": "Material",
+      "enabled": true,
+      "constraints": [
+        { "type": "Prefix", "value": "M_", "scope": "Both", "enabled": true }
+      ]
+    },
+    {
+      "class": ["MaterialInstanceConstant", "MaterialInstance"],
+      "enabled": true,
+      "constraints": [
+        { "type": "Prefix", "value": "MI_", "scope": "Both", "enabled": true, "replaceFrom": ["M_"] }
+      ]
+    }
+  ],
+
+  "pathRules": [
+    {
+      "_comment": "示例：角色路径使用专属前缀 T_Char_，纹理后缀为 _CharD / _CharN",
+      "enabled": false,
+      "path": "/Game/Art/Characters/",
+      "assetTypes": [
+        { "class": ["Texture2D", "Texture"], "prefix": "T_Char_", "suffix": "", "suffixPlaceholder": "_CharAuto" }
+      ],
+      "validation": [
+        {
+          "class": ["Texture2D", "Texture"],
+          "constraints": [
+            { "type": "Prefix", "value": "T_Char_", "scope": "Both", "enabled": true },
+            { "type": "AllowSuffix", "value": "_CharD",  "scope": "Both", "enabled": true },
+            { "type": "AllowSuffix", "value": "_CharN",  "scope": "Both", "enabled": true }
+          ]
+        }
+      ]
+    },
+
+    {
+      "_comment": "TA 规则，允许 MaterialInstance 资产使用 M_前缀",
+      "enabled": true,
+      "path": "/Game/Asset/TA",
+      "assetTypes": [
+        { "class": ["MaterialInstanceConstant", "MaterialInstance"], "prefix": "MI_", "suffix": "", "suffixPlaceholder": "" }
+      ],
+      "validation": [
+        {
+          "class": ["MaterialInstanceConstant", "MaterialInstance"],
+          "constraints": [
+            { "type": "Prefix", "value": "MI_", "scope": "Both", "enabled": true },
+            { "type": "AllowPrefix", "value": "M_", "scope": "Both", "enabled": true }
+          ]
+        }
+      ]
+    }
+  ]
+}

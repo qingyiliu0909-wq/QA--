@@ -1,0 +1,45 @@
+{
+  "_note": "项目级共享词表。所有功能复用;新功能一般只在这里加词,不改 crosscheck.py。功能目录下可放同名 vocab.json 覆盖。",
+  "term_alias": {
+    "forge": ["锻造", "铸造"],
+    "shop": ["深境商店", "深境商店入口", "前往兑换", "商店"],
+    "decompose": ["分解", "出售"],
+    "nightbook": ["夜航手册", "NightBook"]
+  },
+  "ui_tokens": {
+    "rename": "名称改为「上限后名称」",
+    "change_icon": "图标替换为「上限后图标」",
+    "hide_level": "不再显示具体等级数字",
+    "sort_lowest": "排序优先级降到最低(排在列表最后)",
+    "challenge_disabled": "选中时「开始挑战」按钮置灰",
+    "selectable": "可被选中(保留按钮五态)",
+    "per_level_independent_filter": "每个等级Tab独立保存当前筛选的元素"
+  },
+  "scenarios": {
+    "ticket_maxlevel_display": "门票达上限后的降级显示",
+    "reward_over_limit": "奖励区·报酬已达上限",
+    "toast_ticket_blocked": "门票不可用提示",
+    "toast_level_low": "等级不足提示",
+    "nightbook_attr_filter_entry": "夜航手册属性筛选入口(下拉框形式)",
+    "nightbook_attr_filter_dropdown": "夜航手册属性筛选下拉框内容与操作",
+    "nightbook_local_cache_filter": "夜航手册属性筛选按等级独立缓存",
+    "nightbook_attr_tab_group": "夜航手册按元素属性分组的三级页签",
+    "nightbook_simple_mode_toggle": "夜航手册简洁模式开关",
+    "nightbook_local_cache_tab": "夜航手册缓存上次选中页签",
+    "nightbook_local_cache_simple": "夜航手册缓存简洁模式状态"
+  },
+  "_comment_scenario_kinds": "每个场景键只允许出现在这些 kind 上;抓『合法 key 贴到错 kind』的语义错位",
+  "scenario_kinds": {
+    "ticket_maxlevel_display": ["mechanism", "state"],
+    "reward_over_limit": ["reward_area"],
+    "toast_ticket_blocked": ["toast"],
+    "toast_level_low": ["toast"],
+    "nightbook_attr_filter_entry": ["mechanism"],
+    "nightbook_attr_filter_dropdown": ["mechanism"],
+    "nightbook_local_cache_filter": ["mechanism"],
+    "nightbook_attr_tab_group": ["mechanism"],
+    "nightbook_simple_mode_toggle": ["mechanism"],
+    "nightbook_local_cache_tab": ["mechanism"],
+    "nightbook_local_cache_simple": ["mechanism"]
+  }
+}

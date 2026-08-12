@@ -1,0 +1,23 @@
+{
+  "version": "2.0",
+  "description": "跨项目通用配置。按项目需要补充 field_meanings、enum_mappings 和 table_display_fields。",
+  "auto_discover": {
+    "enabled": true,
+    "naming_rules": [
+      {
+        "pattern": "{Table}Id",
+        "description": "字段名以 Id 结尾时，尝试关联同名表的主键。"
+      },
+      {
+        "pattern": "Contains Table Name",
+        "description": "字段名包含表名关键词时，尝试关联相应表。"
+      }
+    ],
+    "id_suffix": "Id",
+    "max_fk_depth": 5,
+    "max_results_per_table": 200
+  },
+  "field_meanings": {},
+  "enum_mappings": {},
+  "table_display_fields": {}
+}
