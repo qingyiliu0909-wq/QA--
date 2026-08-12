@@ -9,6 +9,7 @@
 | 工具包 | 用途 | 迁移时需要做的事 |
 |---|---|---|
 | `黑盒自动化跑测框架（runner）` | 在 Windows 或 Android 真机上通过图像/控件定位执行黑盒流程，输出截图、日志、JSON 和 JUnit 报告。 | 配置游戏进程/包名、创建 YAML 用例与图片锚点。 |
+| `UE原生自动化测试基座（ue-native-automation-test-foundation）` | 用 UE Automation Framework 编写单元与功能测试，并提供 Lua 用例自动发现的参考实现。 | 替换模块名和 API 宏；Lua 发现层需适配运行时、地图测试基类和测试 Actor。 |
 
 ## 02 配置与静态检查
 
@@ -44,4 +45,3 @@
 - `config_validator`：当前只支持本项目的 Lua 导表、DynQuest、Dispatch、Fishing 规则，需重构后才适合独立发布。
 - `Tools/doc_crosscheck/standards/`：包含当前项目 UI API、路径和控件行为契约。
 - `TestCases/`：用例生成机制可参考，但输入数据绑定当前玩法。
-
